@@ -1,0 +1,32 @@
+# https://www.codeeval.com/open_challenges/5/
+
+import sys
+
+# Use Floyd's Tortoise and hare algorithm
+def findCycle(seq):
+    tortoise = 1
+    hare = 2
+    while seq[hare] != seq[tortoise]:
+        tortoise += 1
+        hare += 2
+        if hare >= len(seq):
+            return
+
+    for x in reversed(xrange(tortoise)):
+        sys.stdout.write(str(seq[x]))
+        if x > 0:
+            sys.stdout.write(' ')
+    print
+
+def main():
+    with open(sys.argv[1],'r') as f:
+        for line in f:
+            input = [int(n) for n in line.split(' ') if len(n) > 0 and n != '\n']
+            input.reverse()
+            if len(input) < 3:
+                continue
+            findCycle(input)
+    
+
+if __name__ == '__main__':
+    main()

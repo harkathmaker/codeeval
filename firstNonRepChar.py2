@@ -1,0 +1,27 @@
+# https://www.codeeval.com/open_challenges/12/
+
+import sys
+
+def firstNonRepeatingCharacter(s):
+    characters = {}
+    charCounts = []
+    for c in s:
+        if c in characters:
+            charCounts[characters[c]] = (c,charCounts[characters[c]][1]+1)
+        else:
+            characters[c] = len(charCounts)
+            charCounts.append((c,1))
+
+    for t in charCounts:
+        if t[1] == 1:
+            return t[0]
+
+    return 'None'
+
+def main():
+    with open(sys.argv[1],'r') as f:
+        for line in f:
+            print firstNonRepeatingCharacter(line)
+
+if __name__ == '__main__':
+    main()

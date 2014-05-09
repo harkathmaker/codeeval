@@ -1,0 +1,40 @@
+# https://www.codeeval.com/open_challenges/3/
+
+import sys
+
+def isPalindrome(p):
+    return str(p) == str(p)[::-1]
+
+# Makes a list of primes up to a given number n.
+def findPrimes(n):
+    marked = [0] * n
+    # Mark with sieve of Eratosthenes
+    p = 3
+    while True:
+        if p >= n:
+            break
+        k = p*2
+        #print "Marking multiples of",p
+        while k < n:
+            marked[k] = 1
+            k += p
+        p += 2
+        while p < n and marked[p] != 0:
+            p += 2
+    
+    ret = {2 : 0}
+    i = 3
+    while i < n:
+        if marked[i] == 0:
+            ret[i] = 0
+        i += 2
+
+    return ret
+
+def main():
+    p = findPrimes(1000)
+    print max([k for k in p if isPalindrome(k)])
+        
+
+if __name__ == "__main__":
+    main()

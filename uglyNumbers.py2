@@ -1,0 +1,40 @@
+# https://www.codeeval.com/open_challenges/42/
+
+import sys
+
+uglyNums = {}
+
+def isUgly(n):
+    if n not in uglyNums:
+        uglyNums[n] = (n % 2 == 0 or n % 3 == 0 or n % 5 == 0 or n % 7 == 0)
+    return uglyNums[n]
+
+def getUglyCount(prefix,suffix):
+    # Evaluate concatenations, addition, and subtraction
+    if len(suffix) > 0:
+        n = getUglyCount(prefix[:-1]+[10*prefix[-1] + suffix[0]],suffix[1:])
+        if len(suffix) > 1:
+            # 1 denotes subtract, 2 denotes add
+            n += getUglyCount(prefix+[2,suffix[0]],suffix[1:])
+            n += getUglyCount(prefix+[1,suffix[0]],suffix[1:])
+        else:
+            n += getUglyCount(prefix+[2,suffix[0]],[])
+            n += getUglyCount(prefix+[1,suffix[0]],[])
+        return n
+    
+    n = prefix[0]
+    for i in range(1,len(prefix),2):
+        if prefix[i] == 1:
+            n -= prefix[i+1]
+        else:
+            n += prefix[i+1]
+    
+    return int(isUgly(abs(n)))
+
+def main():
+    with open(sys.argv[1],'r') as f:
+        for line in f:
+            print getUglyCount([int(line[0])],[int(i) for i in line[1:-1]])
+
+if __name__ == '__main__':
+    main()

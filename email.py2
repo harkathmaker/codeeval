@@ -1,0 +1,28 @@
+# https://www.codeeval.com/open_challenges/35/
+
+import re
+import sys
+
+def main():
+    comment = r'(\(.*\))?'
+
+    domain = r'([a-zA-Z0-9][a-zA-Z0-9\-]*[a-zA-Z0-9]|[a-zA-Z0-9])'
+    domain_chunk = '(' + domain + r')(\.' + domain + ')*'
+
+    local = r'([a-zA-Z0-9!#$%^&*\'+-/=?_`{|}~])+'
+    local_quoted = r'\"([a-zA-Z0-9!#$%^&*\'+-/=?_`{|}~():;<>@[ \]]|\\\\|\\")+\"'
+    local_chunk = '('+local+'|'+local_quoted+r')(\.('+local+r'|'+local_quoted+r'))*'
+
+    email = comment + local_chunk + comment + '@' + comment + domain_chunk + comment + '$'
+    
+    prog = re.compile(email)
+
+    with open(sys.argv[1],'r') as f:
+        for line in f:
+            if prog.match(line[:-1]) != None:
+                print 'true'
+            else:
+                print 'false'
+
+if __name__ == '__main__':
+    main()

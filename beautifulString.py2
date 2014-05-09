@@ -1,0 +1,37 @@
+# https://www.codeeval.com/open_challenges/83/
+
+import sys
+import collections
+import string
+
+# The numbers for the map were calculated from sample lines:
+# ABbCcc
+# Good luck in the Facebook Hacker Cup this year!
+# Ignore punctuation, please :)
+# Sometimes test cases are hard to make up.
+# So I just go consult Professor Dalves
+# 152
+# 754
+# 491
+# 729
+# 646
+# Some of the lines are actually impossible to satisfy with the given constraints. The formula is not constant but depends on the string.
+# See: http://resources.infosecinstitute.com/facebook-hacker-2013-qual-round-beautiful-strings/
+
+def beauty(str):
+    sum = 0
+    cnt = collections.Counter(str)
+    letterVal = 26
+    for k,v in cnt.most_common():
+        if k in string.ascii_lowercase:
+            sum += letterVal * v
+            letterVal -= 1
+    return sum
+
+def main():
+    with open(sys.argv[1],'r') as f:
+        for line in f:
+            print beauty(line.lower())
+
+if __name__ == '__main__':
+    main()

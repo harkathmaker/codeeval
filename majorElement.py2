@@ -1,0 +1,32 @@
+# https://www.codeeval.com/open_challenges/132/ 
+
+import sys
+
+def mooresVote(elements):
+    major_index = 0
+    count = 1
+    for i in xrange(1,len(elements)):
+        if elements[major_index] == elements[i]:
+            count += 1
+        else:
+            count -= 1
+        if count == 0:
+            major_index = i
+            count = 1
+    return elements[major_index]
+
+def isMajority(elements,n):
+    return (elements.count(n) > len(elements) // 2)
+
+def main():
+    with open(sys.argv[1],'r') as f:
+        for l in f:
+            elements = [int(n) for n in l.split(',')[::-1]]
+            n = mooresVote(elements)
+            if isMajority(elements,n):
+                print n
+            else:
+                print None
+
+if __name__ == '__main__':
+    main()

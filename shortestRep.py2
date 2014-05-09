@@ -1,0 +1,20 @@
+# https://www.codeeval.com/open_challenges/107/
+
+import sys
+
+def findShortestRep(seq):
+    index = 1
+    while index < len(seq):
+        if seq[index] == seq[0] and len(seq) % index == 0 and seq == seq[:index] * (len(seq)//index):
+            return index
+        index += 1
+    return len(seq)
+
+def main():
+    with open(sys.argv[1],'r') as f:
+        for line in f:
+            print findShortestRep(line[:-1])
+    
+
+if __name__ == '__main__':
+    main()

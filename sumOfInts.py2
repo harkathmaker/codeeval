@@ -1,0 +1,14 @@
+# https://www.codeeval.com/open_challenges/24/
+
+import sys
+
+def main():
+    sum = 0
+    with open(sys.argv[1],'r') as f:
+        for line in f:
+            sum += int(line)
+
+    print sum
+
+if __name__ == '__main__':
+    main()

@@ -1,0 +1,30 @@
+# https://www.codeeval.com/open_challenges/4/
+
+def isPrime(n):
+    # Don't have to deal with even numbers besides 2
+    if n == 2:
+        return True
+    if n % 2 == 0:
+        return False
+    for i in xrange(3,n,2):
+        if n % i == 0:
+            return False
+    return True
+
+# Makes a list of primes up to a given number n.
+def addFirstNPrimes(n):
+    i = 2
+    found = 0
+    sum = 0
+    while found < n:
+        if isPrime(i):
+            found += 1
+            sum += i
+        i += 1
+    return sum
+    
+def main():
+    print addFirstNPrimes(1000)
+
+if __name__ == "__main__":
+    main()

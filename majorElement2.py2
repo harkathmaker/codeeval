@@ -1,0 +1,21 @@
+# https://www.codeeval.com/open_challenges/132/
+
+import sys
+
+# Test to see if Python's built-in list handling can beat Moore's voting
+
+def main():
+    with open(sys.argv[1],'r') as f:
+        for l in f:
+            elements = [int(n) for n in l.split(',')[::-1]]
+            counts = [0] * 101
+            for e in elements:
+                counts[e] += 1
+            maxCount = max(counts)
+            if maxCount > len(elements) // 2:
+                print counts.index(maxCount)
+            else:
+                print 'None'
+
+if __name__ == '__main__':
+    main()

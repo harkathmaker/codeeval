@@ -1,0 +1,31 @@
+# https://www.codeeval.com/open_challenges/39/
+import sys
+
+def digitSumSquared(n):
+    sum = 0
+    while n > 0:
+        sum += (n % 10) ** 2
+        n /= 10
+    return sum
+
+def isHappy(n):
+    prevNums = {}
+    while n != 1:
+        sum = digitSumSquared(n)
+        if sum in prevNums:
+            return False
+        prevNums[sum] = 0
+        n = sum
+    return True
+
+def main():
+    with open(sys.argv[1],'r') as f:
+        for line in f:
+            n = int(line)
+            if isHappy(n):
+                print 1
+            else:
+                print 0
+
+if __name__ == '__main__':
+    main()
