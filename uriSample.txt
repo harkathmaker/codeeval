@@ -1,0 +1,6 @@
+http://abc.com:80/~smith/home.html;http://ABC.com/%7Esmith/home.html
+http://abc.com:8/~smith/home.html;http://ABC.com/%7Esmith/home.html
+http://abc.com:80/~smith/home.html;http://ABC.com/%7EsmitH/home.html
+http://abc.com:/~smith/home.html;http://ABC.com/%7Esmith/home.html
+HTTP://abc.com:80;http://ABC.com/
+HTTPS://abc.com:80;http://ABC.com/

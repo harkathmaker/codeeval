@@ -1,0 +1,20 @@
+# https://www.codeeval.com/open_challenges/140/
+
+import sys
+
+def main():
+    with open(sys.argv[1],'r') as f:
+        for line in f:
+            components = line.split(';')
+            words = components[0].split(' ')
+            indices = [int(i) for i in components[1].split(' ')]
+            outVals = [0] * len(words)
+            remainder = len(words) * (len(words)+1) / 2
+            for k,pos in enumerate(indices):
+                outVals[pos-1] = words[k]
+                remainder -= pos
+            outVals[remainder-1] = words[-1]
+            print ' '.join(outVals)
+
+if __name__ == '__main__':
+    main()

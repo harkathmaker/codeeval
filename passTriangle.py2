@@ -1,0 +1,20 @@
+# https://www.codeeval.com/open_challenges/89/
+
+import sys
+
+def largestPath(tri):
+    for k in range(len(tri)-2,-1,-1):
+        for i in xrange(len(tri[k])):
+            tri[k][i] += max(tri[k+1][i],tri[k+1][i+1])
+    return tri[0][0]
+
+
+def main():
+    tri = []
+    with open(sys.argv[1],'r') as f:
+        for line in f:
+            tri.append([int(i) for i in line.split()])
+    print largestPath(tri)
+
+if __name__ == '__main__':
+    main()

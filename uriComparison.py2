@@ -1,0 +1,94 @@
+# https://www.codeeval.com/open_challenges/80/
+
+import sys
+
+RESTRICTED_CHARS = ',/?:@&=+$#'
+
+def stripHexChars(str):
+    for i in range(len(str)-1,-1,-1):
+        if str[i] == '%':
+            try:
+                hexChar = chr(int(str[i+1:i+3],16))
+                if hexChar not in RESTRICTED_CHARS:
+                    str = str[:i]+hexChar+str[i+3:]
+            except ValueError:
+                pass
+    return str
+
+def matchingURIs(u1,u2):
+    u1 = stripHexChars(u1)
+    u2 = stripHexChars(u2)
+    u1parts = u1.split('://')
+    u2parts = u2.split('://')
+
+    # If one has a scheme and one doesn't, it's not matching
+    if len(u1parts) != len(u2parts):
+#        print "Mismatched schemes"
+        return False
+
+    # Scheme mismatch
+    if len(u1parts) > 1 and u1parts[0].lower() != u2parts[0].lower():
+#        print "mismatched schemes"
+        return False
+
+    path1 = u1parts[-1]
+    path2 = u2parts[-1]
+    port1Start = path1.find(':')
+    port2Start = path2.find(':')
+
+    # Default to port 80 if no port listed, or malformed
+    port1End = path1.find('/')
+    if port1End == -1:
+        port1End = len(path1)
+    port2End = path2.find('/')
+    if port2End == -1:
+        port2End = len(path2)
+
+    try:
+        port1 = int(path1[port1Start+1:port1End])
+    except ValueError:
+        port1 = 80
+
+    try:
+        port2 = int(path2[port2Start+1:port2End])
+    except ValueError:
+        port2 = 80
+
+    # Compare ports
+    if port1 != port2:
+#        print "mismatched ports {0} and {1}".format(port1,port2)
+        return False
+
+    # Separate hostname from rest of path
+    if port1Start == -1:
+        port1Start = path1.find('/')
+    if port2Start == -1:
+        port2Start = path2.find('/')
+
+    if port1Start == -1:
+        host1 = path1
+    else:
+        host1 = path1[:port1Start]
+    if port2Start == -1:
+        host2 = path2
+    else:
+        host2 = path2[:port2Start]
+        
+    if host1.lower() != host2.lower():
+#        print "mismatched hosts {0} and {1}".format(host1,host2)
+        return False
+
+    if path1[port1End+1:] != path2[port2End+1:]:
+#        print "mismatched paths {0} and {1}".format(path1[port1End+1:],path2[port2End+1:])
+        return False
+
+    return True
+
+def main():
+    with open(sys.argv[1],'r') as f:
+        for line in f:
+            uris = line[:-1].split(';')
+            print matchingURIs(uris[0],uris[1])
+
+if __name__ == '__main__':
+    main()

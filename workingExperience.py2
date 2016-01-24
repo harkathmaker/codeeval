@@ -1,0 +1,42 @@
+# https://www.codeeval.com/open_challenges/139/
+
+import math
+import sys
+
+START_YEAR = 1990
+END_YEAR = 2020
+MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+
+def getMonthNum(m):
+    for i, mn in enumerate(MONTHS):
+        if mn == m:
+            return i
+
+    return None
+
+def parseJobTime(str):
+    components = str.split('-')
+    startStrs = components[0].split(' ')
+    endStrs = components[1].split(' ')
+    start = getMonthNum(startStrs[0]) + (int(startStrs[1]) - START_YEAR) * len(MONTHS)
+    end = getMonthNum(endStrs[0]) + (int(endStrs[1]) - START_YEAR) * len(MONTHS)
+
+    return (start, end)
+
+def getWorkingExperiences(line):
+    monthsWorked = [0] * (END_YEAR - START_YEAR + 1) * len(MONTHS)
+    for job in line.split('; '):
+        (start, end) = parseJobTime(job)
+        for i in range(start,end+1):
+            monthsWorked[i] = 1
+
+    return sum(monthsWorked) // len(MONTHS)
+
+
+def main():
+    with open(sys.argv[1],'r') as f:
+        for line in f:
+            print getWorkingExperiences(line)
+
+if __name__ == '__main__':
+    main()

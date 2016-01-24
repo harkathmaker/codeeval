@@ -1,0 +1,36 @@
+# https://www.codeeval.com/open_challenges/119/
+
+import sys
+
+def inspectChain(links):
+    map = {}
+    for l in links:
+        pair = l.split('-')
+        map[pair[0]] = (pair[1],False)
+
+    if 'BEGIN' not in map:
+        return False
+
+    current = map['BEGIN']
+    lastKey = 'BEGIN'
+    linksTraversed = 1
+
+    while not current[1] and current[0] != 'END':
+        map[lastKey] = (current[0],True)
+        lastKey = current[0]
+        current = map[lastKey]
+        linksTraversed += 1
+
+    return (current[0] == 'END' and linksTraversed == len(map))
+
+def main():
+    with open(sys.argv[1],'r') as f:
+        for line in f:
+            links = line[:-1].split(';')
+            if inspectChain(links):
+                print 'GOOD'
+            else:
+                print 'BAD'
+
+if __name__ == '__main__':
+    main()

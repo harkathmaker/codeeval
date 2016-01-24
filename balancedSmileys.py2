@@ -1,0 +1,30 @@
+# https://www.codeeval.com/open_challenges/84/
+
+import sys
+
+def balanced(str, pos=0, count=0):
+    if pos == len(str):
+        return count==0
+    # Possibly a smiley
+    if str[pos] == ':' and len(str) > pos+1 and (str[pos+1] == '(' or str[pos+1] == ')'):
+        return (balanced(str,pos+2,count) or balanced(str,pos+1,count))
+    elif str[pos] == '(':
+        return balanced(str,pos+1,count+1)
+    elif str[pos] == ')':
+        if count == 0:
+            return False
+        else:
+            return balanced(str,pos+1,count-1)
+    else:
+        return balanced(str,pos+1,count)
+
+def main():
+    with open(sys.argv[1],'r') as f:
+        for line in f:
+            if balanced(line[:-1]):
+                print 'YES'
+            else:
+                print 'NO'
+
+if __name__ == '__main__':
+    main()

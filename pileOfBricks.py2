@@ -1,0 +1,49 @@
+# https://www.codeeval.com/open_challenges/117/
+
+import sys
+
+def getFittingBricks(holeDims,bricks):
+    holeDims.sort()
+    fittingBricks = []
+    for b in bricks:
+        b[1].sort()
+        if brickFits(b[1],holeDims):
+            fittingBricks.append(b[0])
+
+    return fittingBricks
+
+def brickFits(dims,hole):
+    return (hole[-1] >= dims[1] and hole[-2] >= dims[0])
+
+def main():
+    with open(sys.argv[1],'r') as f:
+        for line in f:
+            bricksAndHole = line[:-1].split('|')
+            holeCoords = bricksAndHole[0].split(' ')
+            holeStart = holeCoords[0].split(',')
+            holeEnd = holeCoords[1].split(',')
+            holeDims = []
+            holeDims.append(abs(int(holeStart[0][1:])-int(holeEnd[0][1:])))
+            holeDims.append(abs(int(holeStart[1][:-1])-int(holeEnd[1][:-1])))
+
+            brickList = bricksAndHole[1].split(';')
+            bricks = []
+            for b in brickList:
+                brickComponents = b.split(' ')
+                idx = int(brickComponents[0][1:])
+                brickStart = brickComponents[1].split(',')
+                brickEnd = brickComponents[2].split(',')
+                brickDims = []
+                brickDims.append(abs(int(brickStart[0][1:])-int(brickEnd[0][1:])))
+                brickDims.append(abs(int(brickStart[1])-int(brickEnd[1])))
+                brickDims.append(abs(int(brickStart[2][:-1])-int(brickEnd[2][:-2])))
+                bricks.append((idx,brickDims))
+
+            fitBricks = getFittingBricks(holeDims,bricks)
+            if len(fitBricks) == 0:
+                print '-'
+            else:
+                print ','.join([str(i) for i in fitBricks])
+
+if __name__ == '__main__':
+    main()

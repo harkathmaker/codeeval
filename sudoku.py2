@@ -1,0 +1,41 @@
+# https://www.codeeval.com/open_challenges/78/
+
+import sys
+
+def isSudoku(dim,elements):
+    expected = dim * (dim+1) / 2
+    cellSize = int(dim ** .5)
+    # Check rows
+    for i in xrange(dim):
+        if sum(elements[i*dim:(i+1)*dim]) != expected:
+            return False
+    
+    # Check columns
+    for i in xrange(dim):
+        if sum(elements[i:i+dim*dim:dim]) != expected:
+            return False
+
+    # Check regions
+    for x in xrange(cellSize):
+        for y in xrange(cellSize):
+            total = 0
+            for i in xrange(cellSize):
+                row = (y*cellSize+i)
+                col = x*cellSize
+                total += sum(elements[row*dim+col:row*dim+col+cellSize])
+            if total != expected:
+                return False
+
+    # We passed all the tests!
+    return True
+
+def main():
+    with open(sys.argv[1],'r') as f:
+        for line in f:
+            components = line.split(';')
+            elements = [int(i) for i in components[1].split(',')]
+            dim = int(components[0])
+            print isSudoku(dim,elements)
+
+if __name__ == '__main__':
+    main()
