@@ -1,0 +1,30 @@
+# https://www.codeeval.com/open_challenges/130/
+
+import sys
+import re
+
+def getRE(binSeq):
+	e = r'^'
+	for c in binSeq:
+		if c == '1':
+			e += r'(A+|B+)'
+		else:
+			e += r'A+'
+			
+	e += '$'
+	return re.compile(e)
+
+def main():
+	with open(sys.argv[1],'r') as f:
+		for line in f:
+			parts = line[:-1].split(' ')
+			bin = parts[0]
+			alpha = parts[1]
+			prog = getRE(bin)
+			if re.match(prog,alpha) != None:
+				print 'Yes'
+			else:
+				print 'No'
+
+if __name__ == '__main__':
+	main()
